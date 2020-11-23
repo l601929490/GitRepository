@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.siwo.dao.DynamicConditionDao">
+	
+	 
+	
+	<update id="changeDynamicCondition"  parameterType="com.siwo.model.DynamicCondition">
+		UPDATE dynamic_condition
+		<trim prefix="set" suffixOverrides=",">
+			<if test="loginDynamicCondition!=null">login_dynamic_condition=#{loginDynamicCondition},</if>
+			<if test="clockDynamicCondition!=null">clock_dynamic_condition=#{clockDynamicCondition},</if>
+			<if test="videoDynamicCondition!=null">video_dynamic_condition=#{videoDynamicCondition},</if>
+			<if test="shareDynamicCondition!=null">share_dynamic_condition=#{shareDynamicCondition},</if>
+			<if test="likeDynamicCondition!=null">like_dynamic_condition=#{likeDynamicCondition},</if>
+			<if test="reviewDynamicCondition!=null">review_dynamic_condition=#{reviewDynamicCondition},</if>
+			<if test="schoolId!=null">school_id=#{schoolId},</if>
+		</trim>
+		WHERE dynamic_condition_id = #{dynamicConditionId}
+	</update>
+	
+	 
+	
+</mapper>

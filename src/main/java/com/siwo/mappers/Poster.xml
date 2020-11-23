@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.siwo.dao.PosterDao">
+	
+	<update id="updatePoster"  parameterType="com.siwo.model.Poster">
+		UPDATE poster
+		<trim prefix="set" suffixOverrides=",">
+			<if test="posterBackgroundImage!=null">poster_background_image=#{posterBackgroundImage},</if>
+			<if test="posterProverb!=null">poster_proverb=#{posterProverb},</if>
+			<if test="posterEditSession!=null">poster_edit_session=#{posterEditSession},</if>
+			<if test="posterEditor!=null">poster_editor=#{posterEditor},</if>
+			<if test="posterChecked!=null">poster_checked=#{posterChecked},</if>
+		</trim>
+		WHERE poster_id = #{posterId}
+	</update>
+	
+	<delete id="deleteManyPoster" parameterType="java.lang.String">
+		delete from poster where poster_id in 
+		<foreach collection="array" open="(" close=")" item="item" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+</mapper>

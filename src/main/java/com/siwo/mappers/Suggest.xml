@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.siwo.dao.SuggestDao">
+
+	<update id="updateSuggest">
+		UPDATE suggest
+		<trim prefix="set" suffixOverrides=",">
+			<if test="suggestTitle!=null">suggest_title=#{suggestTitle},</if>
+			<if test="suggestContent!=null">suggest_content=#{suggestContent},</if>
+			<if test="suggestPhone!=null">suggest_phone=#{suggestPhone},</if>
+			<if test="schoolId!=null">school_id=#{schoolId},</if>
+			<if test="editor!=null">editor=#{editor},</if>
+			<if test="editSession!=null">edit_session=#{editSession},</if>
+			<if test="status!=null">status=#{status},</if>
+		</trim>
+		WHERE suggest_id = #{suggestId}
+	</update>
+
+	<delete id="deleteManySuggest" parameterType="java.lang.String">
+		delete from suggest where suggest_id in
+		<foreach collection="array" open="(" close=")" item="item"
+			separator=",">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

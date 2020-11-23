@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.siwo.dao.ApplyMessageDao">
+	
+	<insert id="addApplyMessageStudent"  parameterType="java.util.ArrayList">
+		insert into apply_message_info (apply_message_student_name,apply_message_student_sex,apply_message_id,apply_message_student_age) 
+		values 
+		<foreach collection="list" item="item" separator=",">
+			(#{item.applyMessageStudentName},#{item.applyMessageStudentSex},#{item.applyMessageId},#{item.applyMessageStudentAge})
+		</foreach>
+	</insert>
+	
+	<resultMap type="com.siwo.model.ApplyMessage" id="applyMessage_1">
+	
+		<id column="apply_message_id" property="applyMessageId"/>
+		<result column="apply_message_patriarch" property="applyMessagePatriarch"/>
+		<result column="apply_message_phone" property="applyMessagePhone"/>
+		<result column="apply_message_time" property="applyMessageTime"/>
+		<result column="school_id" property="schoolId"/>
+		
+		<collection property="students" ofType="com.siwo.model.ApplyMessageStudent" javaType="list">
+			<id column="apply_message_info_id" property="applyMessageInfoId"/>
+			<result column="apply_message_student_name" property="applyMessageStudentName"/>
+			<result column="apply_message_student_sex" property="applyMessageStudentSex"/>
+			<result column="apply_message_student_age" property="applyMessageStudentAge"></result>
+		</collection>
+		
+	</resultMap>
+	
+	<resultMap type="com.siwo.model.ApplyMessageStudent" id="applyMessage_2">
+		
+		<id column="apply_message_info_id" property="applyMessageInfoId"/>
+		<result column="apply_message_student_name" property="applyMessageStudentName"/>
+		<result column="apply_message_student_sex" property="applyMessageStudentSex"/>
+		<result column="apply_message_student_age" property="applyMessageStudentAge"></result>
+		<association property="message" javaType="applyMessage">
+			<id column="apply_message_id" property="applyMessageId"/>
+			<result column="apply_message_patriarch" property="applyMessagePatriarch"/>
+			<result column="apply_message_phone" property="applyMessagePhone"/>
+			<result column="apply_message_time" property="applyMessageTime"/>
+			<result column="school_id" property="schoolId"/>
+		</association>
+		
+	</resultMap>
+	
+</mapper>
