@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.siwo.dao.CommonsDao">
+
+	<update id="updateColorImg">
+		UPDATE img_color
+		<trim prefix="set" suffixOverrides=",">
+			<if test="homeImg!=null">home_img=#{homeImg},</if>
+			<if test="schoolId!=null">school_id=#{schoolId},</if>
+			<if test="colour!=null">img_colour=#{colour},</if>
+			<if test="WhetherNeed!=null">whether_need=#{WhetherNeed},</if>
+			<if test="editor!=null">editor=#{editor},</if>
+			<if test="editSession!=null">edit_session=#{editSession},</if>
+		</trim>
+		WHERE img_color_id = #{imgColorId}
+	</update>
+
+	<delete id="deleteManyColorImg" parameterType="java.lang.String">
+		delete from img_color where img_color_id in
+		<foreach collection="array" open="(" close=")" item="item"
+			separator=",">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

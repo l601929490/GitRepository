@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.siwo.dao.ActivityDao">
+	
+	<resultMap type="activity" id="activity_1">
+	
+		<id column="activity_id" property="activityId"/>
+		<result column="activity_preview_img" property="activityPreviewImg"/>
+		<result column="activity_intro" property="activityIntro"/>
+		
+		<collection property="activityImg" ofType="string" javaType="list">
+			
+			<result column="activity_is_figure" />
+			
+			<result column="activity_img_id"/>
+		</collection>
+		
+	</resultMap>
+	
+	<update id="updateActivity"  parameterType="com.siwo.model.Activity">
+		UPDATE activity
+		<trim prefix="set" suffixOverrides=",">
+			<if test="activityPreviewImg!=null">activity_preview_img=#{activityPreviewImg},</if>
+			<if test="activityIntro!=null">activity_intro=#{activityIntro},</if>
+			<if test="activityEditor!=null">activity_editor=#{activityEditor},</if>
+			<if test="activityEditSession!=null">activity_edit_session=#{activityEditSession},</if>
+			<if test="schoolId!=null">school_id=#{schoolId},</if>
+		</trim>
+		WHERE activity_id = #{activityId}
+	</update>
+	
+	<delete id="deleteManyActivity" parameterType="java.lang.String">
+		delete from activity where activity_id in 
+		<foreach collection="array" open="(" close=")" item="item" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteManyActivityImg" parameterType="java.lang.String">
+		delete from activity_img where activity_id in 
+		<foreach collection="array" open="(" close=")" item="item" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.siwo.dao.VideoDao">
+	
+	<delete id="deleteManyVideo" parameterType="java.lang.String">
+		delete from video where video_id in
+		<foreach collection="array" open="(" close=")" item="item"
+			separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<update id="updateVideo">
+		UPDATE video
+		<trim prefix="set" suffixOverrides=",">
+			<if test="videoSum!=null">video_sum=#{videoSum},</if>
+			<if test="videoTitle!=null">video_title=#{videoTitle},</if>
+			<if test="videoTime!=null">video_time=#{videoTime},</if>
+			<if test="videoAddress!=null">video_address=#{videoAddress},</if>
+			<if test="videoImg!=null">video_img=#{videoImg},</if>
+			<if test="videoEditor!=null">video_editor=#{videoEditor},</if>
+			<if test="videoMsg!=null">video_msg=#{videoMsg},</if>
+			<if test="videoEditSession!=null">video_edit_session=#{videoEditSession},</if>
+			<if test="recording!=null">recording=#{recording},</if>
+		</trim>
+		WHERE video_id = #{videoId}
+	</update>
+</mapper>

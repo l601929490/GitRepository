@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.siwo.dao.ScoreShoppingCarDao">
+	
+	<resultMap type="com.siwo.model.ScoreShoppingCar" id="getShoppingCar">
+	
+		<id column="shopping_car_id" property="shoppingCarId"/>
+		<result column="student_id" property="studentId"/>
+		<result column="shopping_num" property="shoppingNum"/>
+		<result column="isSelected" property="isSelected"/>
+		
+		  <collection property="goods" javaType="com.siwo.model.ScoreGoods">
+			<id column="goods_id" property="goodsId"/>
+			<result column="goods_name" property="goodsName"/>
+			<result column="goods_score" property="goodsScore"/>
+			<result column="goods_img" property="goodsImg"/>
+			<result column="goods_createtime" property="goodsCreateTime"/>
+		    <result column="goods_type" property="goodsType"/> 
+		    <result column="goods_detail" property="goodsDetail"/> 
+	    	<result column="goods_rule" property="goodsRule"/> 
+	    	<result column="goods_school" property="goodsSchoolId"/> 
+		    	<collection property="goodsNum"  javaType="com.siwo.model.ScoreGoodsNum">
+					<id column="goods_num_id" property="goodsNumId"/>
+					<result column="goods_num_sum" property="goodsNumSum"/>
+					<result column="goods_num_sale" property="goodsNumSale"/>
+					<result column="goods_num_remain" property="goodsNumRemain"/>
+					<result column="goods_id" property="goodsId"/>
+				</collection>
+		 </collection>
+		
+	</resultMap>
+	
+	 
+	
+</mapper>

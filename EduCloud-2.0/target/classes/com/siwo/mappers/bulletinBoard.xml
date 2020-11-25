@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.siwo.dao.BulletinBoardDao">
+	
+	<update id="updateBulletinBoard"  parameterType="com.siwo.model.BulletinBoard">
+		UPDATE bulletinboard
+		<trim prefix="set" suffixOverrides=",">
+			<if test="content !=null">content=#{content},</if>
+			<if test="checked!=null">checked=#{checked},</if>
+		</trim>
+		WHERE bulletinBoardId = #{bulletinBoardId}
+	</update>
+	
+	<delete id="deleteBulletinBoard" parameterType="java.lang.String">
+		delete from bulletinboard where bulletinBoardId in 
+		<foreach collection="array" open="(" close=")" item="item" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>

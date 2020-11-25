@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.siwo.dao.TaskDao">
+	
+	<update id="updateTask"  parameterType="com.siwo.model.Task">
+		UPDATE task
+		<trim prefix="set" suffixOverrides=",">
+			<if test="sponsorName!=null">sponsor_name=#{sponsorName},</if>
+			<if test="taskStopTime!=null">task_stop_time=#{taskStopTime},</if>
+			<if test="teacherId!=null">teacher_id=#{teacherId},</if>
+			<if test="isTiming!=null">is_timing=#{isTiming},</if>
+			<if test="timingTime!=null">timing_time=#{timingTime},</if>
+			<if test="allowJob!=null">allow_job=#{allowJob},</if>
+			<if test="taskText!=null">task_text=#{taskText},</if>
+			<if test="taskSubject!=null">task_subject=#{taskSubject},</if>
+			<if test="visible!=null">visible=#{visible},</if>
+			<if test="longTermUse != null">long_term_use=#{longTermUse},</if>
+		</trim>
+		WHERE task_id = #{taskId}
+	</update>
+	
+	<update id="updateTaskComment"  parameterType="com.siwo.model.TaskComment">
+		UPDATE task_comment
+		<trim prefix="set" suffixOverrides=",">
+			<if test="comment!=null">comment=#{comment},</if>
+			<if test="recording!=null">recording=#{recording},</if>
+			<if test="recordingTime!=null">recording_time=#{recordingTime},</if>
+		</trim>
+		WHERE task_id = #{taskId}
+	</update>
+	
+</mapper>
