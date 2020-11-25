@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.siwo.dao.GuardianDao">
+
+	<delete id="deleteGuardianMany" parameterType="java.lang.String">
+		delete from guardian where guardian_id in
+		<foreach collection="array" open="(" close=")" item="item"
+			separator=",">
+			#{item}
+		</foreach>
+	</delete>
+
+	<resultMap type="guardian" id="guar_1">
+		<id column="guardian_id" property="guardianId" />
+		<result column="guardian_name" property="guardianName" />
+		<result column="guardian_phone" property="guardianPhone" />
+		<result column="relationship" property="relationship" />
+		<result column="school_id" property="schoolId" />
+
+		<collection property="guardianStudentIds" ofType="integer"
+			javaType="list">
+			<result column="guardian_student_id" />
+		</collection>
+
+		<collection property="students" ofType="student"
+			javaType="list">
+
+			<id column="student_id" property="studentId" />
+			<result column="student_name" property="studentName" />
+			<result column="student_age" property="studentAge" />
+			<result column="student_sex" property="studentSex" />
+			<result column="student_phone" property="studentPhone" />
+			<result column="count" property="count" />
+			<result column="school_id" property="schoolId" />
+			<result column="student_creator" property="studentCreator" />
+			<result column="student_creation_time"
+				property="studentCreationTime" />
+			<result column="student_editor" property="studentEditor" />
+			<result column="student_edit_session"
+				property="studentEditSession" />
+			<result column="fate" property="fate" />
+
+		</collection>
+	</resultMap>
+
+	<update id="updateGuardian">
+		UPDATE guardian
+		<trim prefix="set" suffixOverrides=",">
+			<if test="guardianName!=null">guardian_name=#{guardianName},</if>
+			<if test="guardianPhone!=null">guardian_phone=#{guardianPhone},</if>
+			<if test="relationship!=null">relationship=#{relationship},</if>
+			
+			<if test="guardianEditor!=null">guardian_editor=#{guardianEditor},</if>
+			<if test="guardianEditSession!=null">guardian_edit_session=#{guardianEditSession},</if>
+		</trim>
+		WHERE guardian_id = #{guardianId}
+	</update>
+
+</mapper>

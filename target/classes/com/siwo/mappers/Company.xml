@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.siwo.dao.CompanyDao">
+	
+	<update id="updateCompany"  parameterType="com.siwo.model.Company">
+		UPDATE company
+		<trim prefix="set" suffixOverrides=",">
+			<if test="companyName!=null">company_name=#{companyName},</if>
+			<if test="companyCampus!=null">company_campus=#{companyCampus},</if>
+			<if test="companyCharge!=null">company_charge=#{companyCharge},</if>
+			<if test="companyPrincipal!=null">company_principal=#{companyPrincipal},</if>
+			<if test="showSchoolId!=null">show_school_id=#{showSchoolId},</if>
+			<if test="companyAppId!=null">company_app_id=#{companyAppId},</if>
+			<if test="companyAppSecret!=null">company_app_secret=#{companyAppSecret},</if>
+			<if test="companyEditor!=null">company_editor=#{companyEditor},</if>
+			<if test="companyEditSession!=null">company_edit_session=#{companyEditSession},</if>
+			<if test="wxShowSchoolId!=null">wx_show_school_id=#{wxShowSchoolId},</if>
+			<if test="companyQrcode!=null">company_qrcode=#{companyQrcode},</if>
+			
+			<if test="startTime!=null">start_time=#{startTime},</if>
+			<if test="endTime!=null">end_time=#{endTime},</if>
+		</trim>
+		WHERE company_id = #{companyId}
+	</update>
+	
+	<delete id="deleteManyCompany" parameterType="java.lang.String">
+		  delete from company where company_id in 
+		  <foreach collection="array" open="(" close=")" item="item" separator=",">
+			  #{item}
+		  </foreach>
+	</delete>
+	
+</mapper>

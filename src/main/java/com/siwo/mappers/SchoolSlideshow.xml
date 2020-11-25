@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.siwo.dao.SchoolDao">
+	
+	<delete id="deleteManySchoolSlideshow" parameterType="java.lang.String">
+		delete from school_slideshow where school_slideshow_id in 
+		<foreach collection="array" open="(" close=")" item="item" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteManySchoolHonor" parameterType="java.lang.String">
+		delete from school_honor where school_honor_id in 
+		<foreach collection="array" open="(" close=")" item="item" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<resultMap type="school" id="school_1">
+	
+		<id column="school_id" property="schoolId"/>
+		<result column="school_name" property="schoolName"/>
+		<result column="school_phone" property="schoolPhone"/>
+		<result column="school_principal" property="schoolPrincipal"/>
+		<result column="school_principal_phone" property="schoolPrincipalPhone"/>
+		<result column="school_create_time" property="schoolCreateTime"/>
+		<result column="school_end_time" property="schoolEndTime"/>
+		<result column="school_address" property="schoolAddress"/>
+		<result column="school_longitude" property="schoolLongitude"/>
+		<result column="school_latitude" property="schoolLatitude"/>
+		<result column="school_type" property="schoolType"/>
+		<result column="school_synopsis" property="schoolSynopsis"/>
+		<result column="company_id" property="companyId"/>
+		<result column="admin_id" property="adminId"/>
+		<result column="school_creation_time" property="schoolCreationTime"/>
+		
+		<collection property="slideshow" ofType="schoolSlideshow" javaType="list">
+			
+			<id column="school_slideshow_id" property="schoolSlideshowId"/>
+			<result column="slideshow_img" property="slideshowImg"/>
+			
+		</collection>
+		
+		<collection property="honorImg" ofType="schoolHonor" javaType="list">
+			
+			<id column="school_honor_id" property="schoolHonorId"/>
+			<result column="honor_img" property="honorImg"/>
+			
+		</collection>
+		
+	</resultMap>
+	
+	<update id="updateSchool"  parameterType="com.siwo.model.School">
+		UPDATE school
+		<trim prefix="set" suffixOverrides=",">
+			<if test="schoolName!=null">school_name=#{schoolName},</if>
+			<if test="schoolPhone!=null">school_phone=#{schoolPhone},</if>
+			<if test="schoolPrincipal!=null">school_principal=#{schoolPrincipal},</if>
+			<if test="schoolPrincipalPhone!=null">school_principal_phone=#{schoolPrincipalPhone},</if>
+			<if test="schoolCreateTime!=null">school_create_time=#{schoolCreateTime},</if>
+			<if test="schoolEndTime!=null">school_end_time=#{schoolEndTime},</if>
+			<if test="schoolAddress!=null">school_address=#{schoolAddress},</if>
+			<if test="schoolLongitude!=null">school_longitude=#{schoolLongitude},</if>
+			<if test="schoolLatitude!=null">school_latitude=#{schoolLatitude},</if>
+			<if test="schoolType != null">school_type=#{schoolType},</if>
+			<if test="schoolSynopsis != null">school_synopsis=#{schoolSynopsis},</if>
+			
+			<if test="editor != null">editor=#{editor},</if>
+			<if test="editSession != null">edit_session=#{editSession},</if>
+		</trim>
+		WHERE school_id = #{schoolId}
+	</update>
+	
+	<delete id="deleteManySchool" parameterType="java.lang.String">
+		delete from school where school_id in 
+		<foreach collection="array" open="(" close=")" item="item" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+</mapper>

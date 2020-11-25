@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.siwo.dao.StudentDao">
+	<resultMap type="student" id="stu_1">
+		<id column="student_id" property="studentId"/>
+		<result column="student_name" property="studentName"/>
+		<result column="student_age" property="studentAge"/>
+		<result column="student_sex" property="studentSex"/>
+		<result column="student_phone" property="studentPhone"/>
+		<result column="count" property="count"/>
+		<result column="fate" property="fate" />
+		<association property="myClass" javaType="myClass">
+			<id column="class_id" property="classId"/>
+			<result column="class_name" property="className"/>
+			<result column="class_category" property="classCategory"/>
+			<result column="class_level" property="classLevel"/>
+			<result column="class_hour" property="classHour"/>
+			<result column="promotion_time" property="promotionTime"/>
+			<result column="graduation_time" property="graduationTime"/>
+			<association property="teacher" javaType="teacher">
+				<id column="teacher_id" property="teacherId"/>
+				<result column="teacher_name" property="teacherName"/>
+				<result column="teacher_phone" property="teacherPhone"/>
+				<result column="teacher_age" property="teacherAge"/>
+				<result column="teacher_sex" property="teacherSex"/>
+			</association>
+		</association>
+	</resultMap>
+	
+	<resultMap type="student" id="stu_3">
+		<id column="student_id" property="studentId"/>
+		<result column="student_name" property="studentName"/>
+		<result column="student_age" property="studentAge"/>
+		<result column="student_sex" property="studentSex"/>
+		<result column="student_phone" property="studentPhone"/>
+		<result column="student_class_id" property="studentClassId"/>
+		<result column="count" property="count"/>
+		<result column="school_id" property="schoolId"/>
+		<result column="student_creator" property="studentCreator"/>
+		<result column="student_creation_time" property="studentCreationTime"/>
+		<result column="student_editor" property="studentEditor"/>
+		<result column="student_edit_session" property="studentEditSession"/>
+		<result column="fate" property="fate" />
+		
+		<collection property="myClasses" ofType="myClass" javaType="list">
+			
+			<result column="class_id" property="classId"/>
+			<result column="class_name" property="className"/>
+			<result column="class_category" property="classCategory"/>
+			<result column="class_level" property="classLevel"/>
+			<result column="class_hour" property="classHour"/>
+			<result column="promotion_time" property="promotionTime"/>
+			<result column="graduation_time" property="graduationTime"/>
+			<result column="class_img" property="classImg"/>
+			
+		</collection>
+		<!-- <association property="myClass" javaType="myClass">
+			<result column="class_id" property="classId"/>
+			<result column="class_name" property="className"/>
+			<result column="class_category" property="classCategory"/>
+			<result column="class_level" property="classLevel"/>
+			<result column="class_hour" property="classHour"/>
+			<result column="promotion_time" property="promotionTime"/>
+			<result column="graduation_time" property="graduationTime"/>
+			<result column="class_img" property="classImg"/>
+		</association> -->
+	</resultMap>
+	
+	<resultMap type="student" id="stu_2">
+		<id column="student_id" property="studentId"/>
+		<result column="student_name" property="studentName"/>
+		<result column="student_age" property="studentAge"/>
+		<result column="student_sex" property="studentSex"/>
+		<result column="student_phone" property="studentPhone"/>
+		<result column="count" property="count"/>
+		<result column="class_name" property="studentClassName"/>
+	</resultMap>
+	
+	<insert id="addManyStudents"  parameterType="java.util.ArrayList" useGeneratedKeys="true" keyColumn="student_id" keyProperty="studentId">
+		insert into student (student_name,student_age,student_sex,student_phone,count,student_creation_time,school_id) 
+		values 
+		<foreach collection="students" item="item" separator=",">
+			(#{item.studentName},#{item.studentAge},#{item.studentSex},#{item.studentPhone},#{item.count},#{item.studentCreationTime},#{item.schoolId})
+		</foreach>
+	</insert>
+	
+	<insert id="addManyStudentsClass"  parameterType="java.util.ArrayList" useGeneratedKeys="true" keyColumn="student_id" keyProperty="studentId">
+		insert into class_student (student_class_id,student_id) 
+		values 
+		<foreach collection="students" item="item" separator=",">
+			(#{item.studentClassId},#{item.studentId})
+		</foreach>
+	</insert>
+	
+	<delete id="deleteManyStudent" parameterType="java.lang.String">
+		  delete from student where student_id in 
+		  <foreach collection="array" open="(" close=")" item="item" separator=",">
+			  #{item}
+		  </foreach>
+	</delete>
+	
+	<delete id="deleteManyStudentClass" parameterType="java.lang.String">
+		  delete from class_student where student_id in 
+		  <foreach collection="array" open="(" close=")" item="item" separator=",">
+			  #{item}
+		  </foreach>
+	</delete>
+	
+	<update id="update"  parameterType="com.siwo.model.Student">
+		UPDATE student
+		<trim prefix="set" suffixOverrides=",">
+			<if test="studentName!=null">student_name=#{studentName},</if>
+			<if test="studentAge!=null">student_age=#{studentAge},</if>
+			<if test="studentSex!=null">student_sex=#{studentSex},</if>
+			<if test="studentPhone!=null">student_phone=#{studentPhone},</if>
+			<if test="schoolId!=null">school_id=#{schoolId},</if>
+			<if test="studentEditor!=null">student_editor=#{studentEditor},</if>
+			<if test="studentEditSession != null">student_edit_session=#{studentEditSession},</if>
+			<if test="fate != null">fate=#{fate},</if>
+			<if test="count != null">count=#{count},</if>
+			<if test="grade != null">grade=#{grade},</if>
+			<if test="schoolTitle != null">schoolTitle=#{schoolTitle},</if>
+		</trim>
+		WHERE student_id = #{studentId}
+	</update>
+	
+</mapper>

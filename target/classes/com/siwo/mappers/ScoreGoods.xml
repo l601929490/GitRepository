@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.siwo.dao.ScoreGoodsDao">
+	
+	<resultMap type="com.siwo.model.ScoreGoods" id="scoreGoods">
+	
+		<id column="goods_id" property="goodsId"/>
+		<result column="goods_name" property="goodsName"/>
+		<result column="goods_score" property="goodsScore"/>
+		<result column="goods_img" property="goodsImg"/>
+		<result column="goods_createtime" property="goodsCreateTime"/>
+	    <result column="goods_type" property="goodsType"/> 
+	    <result column="goods_detail" property="goodsDetail"/> 
+	    <result column="goods_rule" property="goodsRule"/> 
+	     <result column="goods_display" property="goodsDisplay"/> 
+	    <collection property="goodsSchool"  javaType="com.siwo.model.School">
+			<id column="school_id" property="schoolId"/>
+			<result column="school_name" property="schoolName"/>
+		</collection>
+		
+		<collection property="goodsNum"  javaType="com.siwo.model.ScoreGoodsNum">
+			<id column="goods_num_id" property="goodsNumId"/>
+			<result column="goods_num_sum" property="goodsNumSum"/>
+			<result column="goods_num_sale" property="goodsNumSale"/>
+			<result column="goods_num_remain" property="goodsNumRemain"/>
+			<result column="goods_num_basic_sale" property="goodsNumBasicSale"/>
+			<result column="goods_id" property="goodsId"/>
+		</collection>
+		
+	</resultMap>
+	
+	 <update id="updateScoreGoods"  parameterType="com.siwo.model.ScoreGoods">
+		UPDATE s_goods sg,s_goods_num sgn
+		<trim prefix="set" suffixOverrides=",">
+			sg.goods_id=sgn.goods_id,
+			<if test="goodsName!=null">goods_name=#{goodsName},</if>
+			<if test="goodsType!=null">goods_type=#{goodsType},</if>
+			<if test="goodsScore!=null">goods_score=#{goodsScore},</if>
+			<if test="goodsImg!=null">goods_img=#{goodsImg},</if>
+			<if test="goodsSchoolId!=null">goods_school=#{goodsSchoolId},</if>
+			<if test="goodsDetail!=null">goods_detail=#{goodsDetail},</if>
+			<if test="goodsRule!=null">goods_rule=#{goodsRule},</if>
+			<if test="goodsDisplay!=null">goods_display=#{goodsDisplay},</if>
+
+
+			<if test="goodsNum!=null">
+				<if test="goodsNum.goodsNumSum!=null">goods_num_sum=#{goodsNum.goodsNumSum},</if>
+				<if test="goodsNum.goodsNumBasicSale!=null">goods_num_basic_sale=#{goodsNum.goodsNumBasicSale},</if>
+				<if test="goodsNum.goodsNumRemain!=null">goods_num_remain=#{goodsNum.goodsNumRemain}</if>
+			</if>
+		</trim>
+		WHERE sg.goods_id=sgn.goods_id AND sg.goods_id=#{goodsId}
+	</update>
+	
+	<delete id="deleteGoodsByGoodsId" parameterType="java.lang.String">
+		delete from s_goods where goods_id in
+		<foreach collection="array" open="(" close=")" item="item" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>

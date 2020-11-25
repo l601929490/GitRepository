@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.siwo.dao.TeacherDao">
+	<resultMap type="teacher" id="tea_1">
+		<id column="teacher_id" property="teacherId"/>
+		<result column="teacher_name" property="teacherName"/>
+		<result column="teacher_phone" property="teacherPhone"/>
+		<result column="teacher_age" property="teacherAge"/>
+		<result column="teacher_sex" property="teacherSex"/>
+		<result column="teacher_img" property="teacherImg"/>
+		<result column="teacher_intro" property="teacherIntro"/>
+		<result column="school_id" property="schoolId"/>
+		<result column="teacher_show" property="teacherShow"/>
+		<result column="teacher_college" property="teacherCollege"/>
+		<result column="teacher_work_year" property="teacherWorkYear"/>
+		<result column="status" property="status"/>
+		<collection property="myClasses" ofType="myClass" javaType="list">
+			
+			<result column="class_id" property="classId"/>
+			<result column="class_name" property="className"/>
+			<result column="class_category" property="classCategory"/>
+			<result column="class_level" property="classLevel"/>
+			<result column="class_hour" property="classHour"/>
+			<result column="promotion_time" property="promotionTime"/>
+			<result column="graduation_time" property="graduationTime"/>
+			<result column="class_img" property="classImg"/>
+			
+		</collection>
+	</resultMap>
+	
+	<delete id="deleteManyTeacher" parameterType="java.lang.String">
+		delete from teacher where teacher_id in
+		<foreach collection="array" open="(" close=")" item="item"
+			separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteManyTeacherClass" parameterType="java.lang.String">
+		delete from class_teacher where teacher_id in
+		<foreach collection="array" open="(" close=")" item="item"
+			separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<update id="updateTeacher"  parameterType="com.siwo.model.Teacher">
+		UPDATE teacher
+		<trim prefix="set" suffixOverrides=",">
+			<if test="teacherName!=null">teacher_name = #{teacherName},</if>
+			<if test="teacherAge!=null">teacher_age = #{teacherAge},</if>
+			<if test="teacherSex!=null">teacher_sex = #{teacherSex},</if>
+			<if test="teacherPhone!=null">teacher_phone = #{teacherPhone},</if>
+			<if test="teacherImg!=null">teacher_img = #{teacherImg},</if>
+			<if test="teacherIntro!=null">teacher_intro = #{teacherIntro},</if>
+			<if test="teacherCollege!=null">teacher_college = #{teacherCollege},</if>
+			<if test="teacherWorkYear!=null">teacher_work_year = #{teacherWorkYear},</if>
+			<if test="teacherEditor!=null">teacher_editor = #{teacherEditor},</if>
+			<if test="teacherEditSession!=null">teacher_edit_session = #{teacherEditSession}</if>
+		</trim>
+		WHERE teacher_id = #{teacherId}
+	</update>
+</mapper>

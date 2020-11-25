@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.siwo.dao.TeachingMaterialDao">
+	
+	<update id="updateTeachingMaterial">
+		UPDATE teaching_material
+		<trim prefix="set" suffixOverrides=",">
+			<if test="grade!=null">grade=#{grade},</if>
+			<if test="subject!=null">subject=#{subject},</if>
+			<if test="title!=null">title=#{title},</if>
+			<if test="editor!=null">editor=#{editor},</if>
+			<if test="editSession!=null">edit_session=#{editSession},</if>
+		</trim>
+		WHERE teaching_material_id = #{teachingMaterialId}
+	</update>
+	
+	<update id="updateContentById">
+		UPDATE teaching_material_content
+		<trim prefix="set" suffixOverrides=",">
+			<if test="vanRead !=null">vanRead=#{vanRead},</if>
+			<if test="content !=null">content=#{content},</if>
+			<if test="teachingMaterialId !=null">teaching_material_id=#{teachingMaterialId},</if>
+		</trim>
+		WHERE teachingMaterialContentId = #{teachingMaterialContentId}
+	</update>
+	
+	<delete id = "deleteManyTeachingMaterial" parameterType="java.lang.String">
+	    delete from teaching_material where teaching_material_id in 
+	    <foreach collection="array" open="(" close=")" item="item" separator=",">
+	        #{item}
+	    </foreach>
+	</delete>
+	
+	<insert id="addTeachingMaterialContent"  parameterType="java.util.ArrayList">
+		insert into teaching_material_content (vanRead,content,teaching_material_id) 
+		values 
+		<foreach collection="contents" item="item" separator=",">
+			(#{item.vanRead},#{item.content},#{item.teachingMaterialId})
+		</foreach>
+	</insert>
+	
+	<delete id = "deleteContent" parameterType="java.lang.String">
+	    delete from teaching_material_content where teaching_material_id in 
+	    <foreach collection="array" open="(" close=")" item="item" separator=",">
+	        #{item}
+	    </foreach>
+	</delete>
+	
+	<resultMap type="teachingMaterial" id="tm">
+		<id column="teaching_material_id" property="teachingMaterialId"/>
+		<result column="grade" property="grade"/>
+		<result column="subject" property="subject"/>
+		<result column="title" property="title"/>
+		<result column="creator" property="creator"/>
+		<result column="creation_time" property="creationTime"/>
+		<result column="editor" property="editor"/>
+		<result column="school_id" property="schoolId"/>
+		<result column="edit_session" property="editSession"/>
+		
+		<collection property="contents" ofType="teachingMaterialContent" javaType="list">
+			
+			<result column="teachingMaterialContentId" property="teachingMaterialContentId"/>
+			<result column="vanRead" property="vanRead"/>
+			<result column="content" property="content"/>
+			
+		</collection>
+	</resultMap>
+	
+</mapper>
